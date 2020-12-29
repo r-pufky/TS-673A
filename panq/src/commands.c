@@ -28,17 +28,14 @@ void command_check(void) {
 }
 
 
-void command_fan(u_int32_t *speed) {
+void command_fan(u_int32_t fan_id, u_int16_t max_fan_speed, u_int32_t *speed) {
     // Implements the fan command
 
     if (!ensure_it8528()) {
         exit(EXIT_FAILURE);
     }
-
-    u_int16_t max_fan_speed = 1720;
-
     u_int8_t status_value = 0xFF;
-    int8_t status_ret = it8528_get_fan_status(0, &status_value);
+    int8_t status_ret = it8528_get_fan_status(fan_id, &status_value);
     if (status_ret != 0 && status_value != 0) {
         fprintf(stderr, "Incorrect fan status!\n");
         exit(EXIT_FAILURE);
@@ -46,7 +43,7 @@ void command_fan(u_int32_t *speed) {
 
     if (speed == NULL) {
         u_int32_t speed_value;
-        if(it8528_get_fan_speed(0, &speed_value) != 0) {
+        if(it8528_get_fan_speed(fan_id, &speed_value) != 0) {
             fprintf(stderr, "Can't get fan speed!\n");
             exit(EXIT_FAILURE);
         }
@@ -72,7 +69,7 @@ void command_fan(u_int32_t *speed) {
         fan_speed += 17;
         fan_speed /= 7;
 
-        if(it8528_set_fan_speed(0, (u_int8_t) fan_speed) != 0) {
+        if(it8528_set_fan_speed(fan_id, (u_int8_t) fan_speed) != 0) {
             fprintf(stderr, "Can't set fan speed!\n");
             exit(EXIT_FAILURE);
         }

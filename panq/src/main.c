@@ -17,10 +17,11 @@ void usage(void) {
     // Print usage
 
     printf("Usage: panq { COMMAND | help }\n\n");
-    printf("    Control the I8528 Super I/O controller on QNAP TS-453Be\n\n");
+    printf("    Control the I8528 Super I/O controller on QNAP TS-877\n\n");
     printf("Available commands:\n");
     printf("  check                      - detect the Super I/O controller\n");
-    printf("  fan [ SPEED_PERCENTAGE ]   - get or set the fan speed\n");
+    printf("  cpufan [ SPEED_PERCENTAGE ]   - get or set the cpu fan speed\n");
+    printf("  diskfan [ SPEED_PERCENTAGE ]   - get or set the disk array fan speed\n");
     printf("  help                       - this help message\n");
     printf("  led { on | off | blink }   - configure the front USB LED\n");
     printf("  log                        - display fan speed & temperature\n");
@@ -50,14 +51,23 @@ int main(int argc, char **argv) {
         seccomp_load(scmp_ctx);
         command_check();
     }
-    else if (strcmp("fan", command) == 0) {
+    else if (strcmp("cpufan", command) == 0) {
         seccomp_load(scmp_ctx);
         u_int32_t *speed = NULL;
         if (argv[2]) {
             speed = (u_int32_t*) malloc(sizeof(u_int32_t));
             *speed = (u_int32_t) strtoul(argv[2], NULL, 10);
         }
-        command_fan(speed);
+        command_fan(6, 2550, speed);
+    }
+    else if (strcmp("diskfan", command) == 0) {
+        seccomp_load(scmp_ctx);
+        u_int32_t *speed = NULL;
+        if (argv[2]) {
+            speed = (u_int32_t*) malloc(sizeof(u_int32_t));
+            *speed = (u_int32_t) strtoul(argv[2], NULL, 10);
+        }
+        command_fan(0, 3800, speed);
     }
     else if (strcmp("led", command) == 0) {
         seccomp_load(scmp_ctx);

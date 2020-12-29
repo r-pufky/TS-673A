@@ -14,7 +14,7 @@
 
 int8_t it8528_get_fan_status(u_int8_t fan_id, u_int8_t* status_value) {
 
-    if (fan_id > 5) {
+    if (fan_id > 11) {
         fprintf(stderr, "it8528_get_fan_status: fan ID too big!\n");
         return -1;
     }
