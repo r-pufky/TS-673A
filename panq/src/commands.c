@@ -249,7 +249,7 @@ void command_test(char* libuLinux_hal_path) {
 }
 
 
-void command_temperature(void) {
+void command_temperature(u_int32_t temp_id) {
     // Implements the temperature command
 
     if (!ensure_it8528()) {
@@ -257,7 +257,7 @@ void command_temperature(void) {
     }
 
     double temperature_value = 0;
-    if (it8528_get_temperature(0, &temperature_value) != 0) {
+    if (it8528_get_temperature(temp_id, &temperature_value) != 0) {
         fprintf(stderr, "Can't get the temperature!\n");
         exit(EXIT_FAILURE);
     }
@@ -266,4 +266,19 @@ void command_temperature(void) {
     // Note: the file /etc/hal_util.conf contains the value ADJUST_SYS_TEMP=-2
     //       that could mean that this reading needs to be corrected.
     printf("%.2f °C\n", temperature_value);
+}
+
+void command_temperatures(void) {
+    // Implements the temperature command
+
+    if (!ensure_it8528()) {
+        exit(EXIT_FAILURE);
+    }
+
+    command_temperature(0);
+    command_temperature(5);
+    command_temperature(6);
+    command_temperature(15);
+    command_temperature(16);
+
 }

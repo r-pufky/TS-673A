@@ -27,6 +27,8 @@ void usage(void) {
     printf("  log                        - display fan speed & temperature\n");
     printf("  test [libuLinux_hal.so]    - test functions against libuLinux_hal.so\n");
     printf("  temperature                - retrieve the temperature\n");
+    printf("  temperatures               - retrieve all temperatures\n");
+
     printf("\n");
 
     exit(EXIT_FAILURE);
@@ -94,7 +96,11 @@ int main(int argc, char **argv) {
     }
     else if (strcmp("temperature", command) == 0) {
         seccomp_load(scmp_ctx);
-        command_temperature();
+        command_temperature(0);
+    }
+    else if (strcmp("temperatures", command) == 0) {
+        seccomp_load(scmp_ctx);
+        command_temperatures();
     }
     else {
         usage();
