@@ -70,6 +70,7 @@ int main(int argc, char **argv) {
             *speed = (u_int32_t) strtoul(argv[2], NULL, 10);
         }
         command_fan(0, 3800, speed);
+        command_fan(1, 3800, speed);
     }
     else if (strcmp("led", command) == 0) {
         seccomp_load(scmp_ctx);

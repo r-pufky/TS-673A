@@ -43,6 +43,7 @@ scmp_filter_ctx configure_seccomp(void) {
     scmp_rules_status += seccomp_rule_add(scmp_ctx, SCMP_ACT_ALLOW, SCMP_SYS(geteuid), 0);
     scmp_rules_status += seccomp_rule_add(scmp_ctx, SCMP_ACT_ALLOW, SCMP_SYS(nanosleep), 0);
     scmp_rules_status += seccomp_rule_add(scmp_ctx, SCMP_ACT_ALLOW, SCMP_SYS(read), 0);
+    scmp_rules_status += seccomp_rule_add(scmp_ctx, SCMP_ACT_ALLOW, SCMP_SYS(clock_nanosleep), 0);
 
     // Restrict syscall arguments values
     scmp_rules_status += seccomp_rule_add(scmp_ctx, SCMP_ACT_ALLOW, SCMP_SYS(iopl), 1,
